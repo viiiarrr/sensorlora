@@ -59,23 +59,29 @@ void loop()
 
     Serial.println("--------------------------------");
 
-    Serial.print("AX : ");
-    Serial.println(imu.ax);
+    // Serial.print("AX : ");
+    // Serial.println(imu.ax);
 
-    Serial.print("AY : ");
-    Serial.println(imu.ay);
+    // Serial.print("AY : ");
+    // Serial.println(imu.ay);
 
-    Serial.print("AZ : ");
-    Serial.println(imu.az);
+    // Serial.print("AZ : ");
+    // Serial.println(imu.az);
 
-    Serial.print("GX : ");
-    Serial.println(imu.gx);
+    // Serial.print("GX : ");
+    // Serial.println(imu.gx);
 
-    Serial.print("GY : ");
-    Serial.println(imu.gy);
+    // Serial.print("GY : ");
+    // Serial.println(imu.gy);
 
-    Serial.print("GZ : ");
-    Serial.println(imu.gz);
+    // Serial.print("GZ : ");
+    // Serial.println(imu.gz);
+
+    Serial.print("Pitch : ");
+    Serial.println(imu.pitch);
+
+    Serial.print("Roll  : ");
+    Serial.println(imu.roll);
 
     Serial.print("TEMP : ");
     Serial.println(imu.temperature);

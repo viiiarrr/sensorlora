@@ -11,6 +11,9 @@ struct IMUData
     float gy;
     float gz;
 
+    float pitch;
+    float roll;
+
     float temperature;
 };
 
