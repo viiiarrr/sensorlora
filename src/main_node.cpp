@@ -2,6 +2,7 @@
 
 #include "comm.h"
 #include "read_imu.h"
+#include "read_soil.h"
 
 uint32_t counter = 0;
 
@@ -31,6 +32,14 @@ void setup()
         }
     }
 
+    if(!initSoil())
+    {
+        while(true)
+        {
+            delay(1000);
+        }
+    }
+
     Serial.println();
     Serial.println("System Ready");
     Serial.println();
@@ -39,6 +48,12 @@ void setup()
 void loop()
 {
     counter++;
+
+    float soil = readSoilPercent();
+
+    Serial.print("SOIL : ");
+    Serial.print(soil);
+    Serial.println(" %");
 
     IMUData imu = readIMU();
 
@@ -72,7 +87,8 @@ void loop()
         String(imu.az,2) + "," +
         String(imu.gx,2) + "," +
         String(imu.gy,2) + "," +
-        String(imu.gz,2);
+        String(imu.gz,2) + "," +
+        String(soil,1);
 
     sendLoRa(payload);
 
