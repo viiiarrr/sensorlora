@@ -73,10 +73,35 @@ void loop() {
             Serial.print("[RX] SNR     : ");
             Serial.print(radio.getSNR());
             Serial.println(" dB");
+            
+            // ==========================================
+            // PARSING DATA
+            // ==========================================
+            int counter;
+            float roll, pitch, rain, soil;
+
+            int parsed = sscanf(received.c_str(), "%d,%f,%f,%f,%f", 
+                                &counter, &roll, &pitch, &rain, &soil);
+
+            if (parsed == 5) {
+                Serial.println("[PARSING] Succeed!");
+                Serial.printf("Roll: %.2f\r\n", roll);
+                Serial.printf("Pitch: %.2f\r\n", pitch);
+                Serial.printf("Rain: %.2f\r\n", rain);
+                Serial.printf("Soil Moisture: %.2f %%\r\n", soil);
+                
+                // eksekusi fuzzy
+                // hitung_fuzzy(roll, pitch, rain, soil);
+                
+            } else {
+                Serial.println("[PARSING] Failed! Format data tidak sesuai (bukan 5 data).");
+            }
+            // ==========================================
+
             Serial.println("====================================");
             lastPrintTime = millis();
         } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
-            Serial.println("[RX] CRC Error - paket rusak!");
+            Serial.println("[RX] CRC Error - packet corrupt!");
         } else {
             Serial.print("[RX] readData error, code = ");
             Serial.println(state);
@@ -86,4 +111,3 @@ void loop() {
         radio.startReceive();
     }
 }
-
