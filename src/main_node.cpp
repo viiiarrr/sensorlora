@@ -88,6 +88,8 @@ void loop()
 
     String payload =
         String(counter) + "," +
+        String(imu.roll,2) + "," +
+        String(imu.pitch,2) + "," +
         String(imu.ax,2) + "," +
         String(imu.ay,2) + "," +
         String(imu.az,2) + "," +
