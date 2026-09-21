@@ -90,12 +90,6 @@ void loop()
         String(counter) + "," +
         String(imu.roll,2) + "," +
         String(imu.pitch,2) + "," +
-        String(imu.ax,2) + "," +
-        String(imu.ay,2) + "," +
-        String(imu.az,2) + "," +
-        String(imu.gx,2) + "," +
-        String(imu.gy,2) + "," +
-        String(imu.gz,2) + "," +
         String(soil,1);
 
     sendLoRa(payload);

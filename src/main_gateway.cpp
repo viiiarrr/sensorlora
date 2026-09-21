@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <RadioLib.h>
+#include <fuzzy_logic.h>
 
 // ============================================================
 //  Pin mapping Heltec WiFi LoRa 32 V3 (ESP32-S3)
@@ -25,26 +26,20 @@ void setup() {
 
     LoRaSPI.begin(9, 11, 10, 8);
 
-    Serial.print("[LoRa] Initializing... ");
-    int state = radio.begin(915.0);
+    int state = radio.begin(915.0); // Sesuaikan dengan frekuensi TX
+    
     if (state == RADIOLIB_ERR_NONE) {
-        Serial.println("SUCCESS");
+        Serial.println("[LoRa] Inisialisasi SUCCESS");
     } else {
-        Serial.print("FAILED, code = ");
-        Serial.println(state);
+        Serial.printf("[LoRa] FAILED, code = %d\n", state);
         while (true) { delay(500); }
     }
 
-    // Mulai mode receive — DIO1 akan HIGH saat paket masuk
-    state = radio.startReceive();
-    if (state == RADIOLIB_ERR_NONE) {
-        Serial.println("[LoRa] Mendengarkan... (DIO1 polling)");
-        Serial.println("---------------------------------");
-    } else {
-        Serial.print("[LoRa] startReceive gagal, code = ");
-        Serial.println(state);
-        while (true) { delay(500); }
-    }
+    // Inisialisasi Fuzzy dari fuzzy_logic.cpp
+    setupFuzzy();
+    Serial.println("[Fuzzy] 27 Aturan berhasil dimuat.");
+
+    radio.startReceive();
 }
 
 void loop() {
@@ -80,10 +75,13 @@ void loop() {
             int counter;
             float roll, pitch, rain, soil;
 
-            int parsed = sscanf(received.c_str(), "%d,%f,%f,%f,%f", 
-                                &counter, &roll, &pitch, &rain, &soil);
+            // dummy rain
+            rain = random(0, 601) / 10.0;
 
-            if (parsed == 5) {
+            int parsed = sscanf(received.c_str(), "%d,%f,%f,%f", 
+                                &counter, &roll, &pitch, &soil);
+
+            if (parsed == 4) {
                 Serial.println("[PARSING] Succeed!");
                 Serial.printf("Roll: %.2f\r\n", roll);
                 Serial.printf("Pitch: %.2f\r\n", pitch);
@@ -92,6 +90,7 @@ void loop() {
                 
                 // eksekusi fuzzy
                 // hitung_fuzzy(roll, pitch, rain, soil);
+                float kemiringan = max(abs(pitch), abs(roll));
                 
             } else {
                 Serial.println("[PARSING] Failed! Format data tidak sesuai (bukan 5 data).");
