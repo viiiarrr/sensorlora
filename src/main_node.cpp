@@ -47,6 +47,7 @@ void setup()
 
 void loop()
 {
+    Serial.println("--------------------------------");
     counter++;
 
     float soil = readSoilPercent();
@@ -56,8 +57,6 @@ void loop()
     Serial.println(" %");
 
     IMUData imu = readIMU();
-
-    Serial.println("--------------------------------");
 
     // Serial.print("AX : ");
     // Serial.println(imu.ax);

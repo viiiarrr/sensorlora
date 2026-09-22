@@ -43,7 +43,6 @@ void setup() {
 }
 
 void loop() {
-    // Tampilkan "Menunggu..." tiap 3 detik supaya tahu board aktif
     if (millis() - lastPrintTime >= 3000) {
         lastPrintTime = millis();
         waitDots = (waitDots % 3) + 1;
@@ -95,7 +94,6 @@ void loop() {
             } else {
                 Serial.println("[PARSING] Failed! Format data tidak sesuai (bukan 5 data).");
             }
-            // ==========================================
 
             Serial.println("====================================");
             lastPrintTime = millis();
