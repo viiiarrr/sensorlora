@@ -3,6 +3,7 @@
 #include "comm.h"
 #include "read_imu.h"
 #include "read_soil.h"
+#include "read_rain.h"
 
 uint32_t counter = 0;
 
@@ -39,6 +40,9 @@ void setup()
             delay(1000);
         }
     }
+
+    setupRain();
+    Serial.println("[Setup] Rain Gauge Interrupt ready.");
 
     Serial.println();
     Serial.println("System Ready");
@@ -85,11 +89,20 @@ void loop()
     Serial.print("TEMP : ");
     Serial.println(imu.temperature);
 
+    // int jumlahTip = getRainTips();
+    // Serial.printf("Rain tipping: %d\r\n", jumlahTip);
+
     String payload =
         String(counter) + "," +
         String(imu.roll,2) + "," +
         String(imu.pitch,2) + "," +
         String(soil,1);
+
+    // int statusPinFisik = digitalRead(6);
+    // Serial.printf(">> STATUS VOLTASE PIN 6 MENTAH: %d <<\r\n", statusPinFisik);
+
+    int jumlahTip = getRainTips();
+    Serial.printf("Rain tipping: %d\r\n", jumlahTip);        
 
     sendLoRa(payload);
 
